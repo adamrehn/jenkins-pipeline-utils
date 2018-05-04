@@ -1,6 +1,6 @@
 //Runs the supplied list of commands in the specified Windows container image
 //(We need to implement this ourselves since Jenkins is yet to implement support for Windows containers)
-def call(image, commands)
+def call(image, commands, args = '')
 {
 	//Store all environment variables starting with JENKINS_ in a file so they can be forwarded to the container
 	bat 'set JENKINS_ > env.vars'
@@ -22,5 +22,5 @@ def call(image, commands)
 	bat 'docker run --rm ' +
 		'-e "WORKSPACE=%WORKSPACE%" --env-file env.vars ' +
 		'-v "%WORKSPACE%:%WORKSPACE%" -w "%WORKSPACE%" ' +
-		"\"${image}\" cmd /S /C _______jenkins_entrypoint.bat"
+		"${args} \"${image}\" cmd /S /C _______jenkins_entrypoint.bat"
 }
